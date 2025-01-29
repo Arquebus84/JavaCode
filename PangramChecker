@@ -1,0 +1,99 @@
+import java.util.Random;
+
+public class PangramChecker {
+	//A pangram is a sentence that utilizes all of the letters in the English alphabet at least once. 
+	//For example, "The quick brown fox jumps over the lazy dog"
+		
+	public static void main(String[] args) {
+		Random rand = new Random();
+		
+		//Test 1) generate a random character from a - z and A - Z (Their unicode digits are 97 - 122 and 65 - 90 respectively)
+		char randomLower = (char)(97 + rand.nextInt(26));
+		char randomUpper = (char)(65 + rand.nextInt(26));
+		System.out.println("Test 1: \nLow: " + randomLower + "\nUpper: " + randomUpper);
+		
+		
+		String sentence = "The quick brown fox jumps over the lazy dog";
+		
+		//Void test:
+		//returnHasLetter(sentence);
+		
+		System.out.println(pangramCheck(sentence));
+	}
+	
+	public static boolean pangramCheck(String sentence) {
+		char[] arrayLow = new char[26];
+		char[] arrayUpp = new char[26];
+		
+		//Generate two arrays that assign the letters of upper and lower case letters to their respective lists
+		for(int i = 0; i < arrayLow.length; i++) {
+			arrayLow[i] = (char)(97 + i);
+			arrayUpp[i] = (char)(65 + i);
+		}
+		
+		String[] lowLetters = new String[arrayLow.length];
+		String[] uppLetters = new String[arrayUpp.length];
+		//This creates a new array, but converts the characters to strings (Character.toString())
+		for(int i = 0; i < lowLetters.length; i++) {
+			lowLetters[i] = Character.toString(arrayLow[i]);
+			uppLetters[i] = Character.toString(arrayUpp[i]);
+		}
+		
+		//This array checks each letter in the string and compares it to the lower and uppercase letters (it creates a boolean array in the process)
+		/**	* compareTo(s1) returns an integer > 0, = 0, or < 0 to indicate whether this string is either > s1, = s1, or < s1
+		 	* contains(s1) returns true if s1 is a substring to this String
+		*/
+		boolean hasLetter[] = new boolean[lowLetters.length];
+		boolean reference[] = new boolean[lowLetters.length];
+		for(int i = 0; i < hasLetter.length; i++) {
+			reference[i] = true;
+			if(sentence.contains(lowLetters[i])) {
+				hasLetter[i] = true;
+			}else {
+				hasLetter[i] = false;
+			}
+			
+			//System.out.print(hasLetter[i] + " ");
+		}
+		
+		if(java.util.Arrays.equals(hasLetter, reference) == true) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	//Returning the array of booleans
+	public static void returnHasLetter(String sentence) {
+		char[] arrayLow = new char[26];
+		char[] arrayUpp = new char[26];
+		
+		//Generate two arrays that assign the letters of upper and lower case letters to their respective lists
+		for(int i = 0; i < arrayLow.length; i++) {
+			arrayLow[i] = (char)(97 + i);
+			arrayUpp[i] = (char)(65 + i);
+		}
+		
+		String[] lowLetters = new String[arrayLow.length];
+		String[] uppLetters = new String[arrayUpp.length];
+		//This creates a new array, but converts the characters to strings (Character.toString())
+		for(int i = 0; i < lowLetters.length; i++) {
+			lowLetters[i] = Character.toString(arrayLow[i]);
+			uppLetters[i] = Character.toString(arrayUpp[i]);
+		}
+		
+		//This array checks each letter in the string and compares it to the lower and uppercase letters (it creates a boolean array in the process)
+		boolean hasLetter[] = new boolean[lowLetters.length];
+		boolean reference[] = new boolean[lowLetters.length];
+		for(int i = 0; i < hasLetter.length; i++) {
+			reference[i] = true;
+			if(sentence.compareTo(lowLetters[i]) >= 0 || sentence.contains(lowLetters[i])) {
+				hasLetter[i] = true;
+			}else {
+				hasLetter[i] = false;
+			}
+			
+			System.out.print(hasLetter[i] + " ");
+		}
+	}
+}
