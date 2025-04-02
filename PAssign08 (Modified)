@@ -1,0 +1,198 @@
+package Passign;
+
+import javafx.application.Application;
+
+import javafx.geometry.Pos;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
+
+public class PAssign08 extends Application{
+
+	protected KeyPadPane keyPane;
+	
+	@SuppressWarnings("exports")
+	@Override
+	public void start(Stage stage) {
+		keyPane = new KeyPadPane();
+		
+		Scene scene = new Scene(keyPane, 300, 400);
+		stage.setScene(scene);
+		stage.show();
+	}
+	
+	public static void main(String[] args) {
+		launch(args);
+	}
+}
+
+class KeyPadPane extends VBox {
+	// private Buttons 
+	protected Button btn1 = new Button("1");
+	protected Button btn2 = new Button("2ABC");
+	protected Button btn3 = new Button("3DEF");
+	protected Button btn4 = new Button("4GHI");
+	protected Button btn5 = new Button("5JKL");
+	protected Button btn6 = new Button("6MNO");
+	protected Button btn7 = new Button("7PQRS");
+	protected Button btn8 = new Button("8TUV");
+	protected Button btn9 = new Button("9WXYZ");
+	protected Button btn0 = new Button("0_");
+	protected Button btnAsterisk = new Button("*+");
+	protected Button btnPound = new Button("^#");
+
+	// collect all buttons
+	private Button[] arrButtons = { btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btnAsterisk, btn0, btnPound};
+	protected ArrayList<Button> listButtons = new ArrayList<>(Arrays.asList(arrButtons));
+	protected ArrayList<Button> copyListButtons;	
+	
+	//Arrange Buttons in GridPane, and Label in Top Border
+	GridPane gPane;
+	
+	// Create a Label
+	Label numbersLabel;
+	StringBuilder numberStr;
+	ArrayList<Integer> numbers;
+	
+	public KeyPadPane() {
+		
+		//Initialize GridPane
+		gPane = new GridPane();
+		
+		//Assign a font for the elements
+		Font font = new Font("Times New Roman", 15);
+		for(Button b : arrButtons) {
+			b.setFont(font);
+			b.setPrefSize(200, 50);
+		}
+		
+		// counter for ArrayList elements
+		int counter = 0;
+
+		// place all buttons in 1-9, blank, 0, blank order, 3 per row
+		for (int i = 0; i < listButtons.size() / 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				gPane.add(listButtons.get(counter++), j, i);
+				gPane.setAlignment(Pos.CENTER);
+			}
+		}
+		
+		//Set up the label
+		numbersLabel = new Label();
+		numbers = new ArrayList<>();
+		numberStr = new StringBuilder();
+		
+		//Modify the Label
+		numbersLabel.setFont(font);
+		numbersLabel.setScaleX(4);
+		numbersLabel.setScaleY(4);
+		numbersLabel.setTranslateY(-50);
+		super.getChildren().add(numbersLabel);
+		
+		//Align all elements in BorderPane super class
+		super.getChildren().add(gPane);
+		super.setAlignment(Pos.CENTER);
+		
+		// call registerEventHandlers() so buttons all work (also adds to the ArrayList numbersTyped)
+		registerEventHandlers();
+	}
+
+	@SuppressWarnings("unchecked")
+	public KeyPadPane(boolean phoneOrder) {
+		// default to default layout for someone choosing false
+		this();
+
+		// now check if they want a phone layout
+		if (phoneOrder) {
+			// get rid of default layout
+			this.getChildren().clear();
+
+			// clone list and replace blanks
+			copyListButtons = (ArrayList<Button>)listButtons.clone();
+			copyListButtons.set(copyListButtons.size() - 3, btnAsterisk);
+			copyListButtons.set(copyListButtons.size() - 1, btnPound);
+
+			// counter start at last numeric button index
+			int counter = copyListButtons.size() - 4;
+
+			// place all buttons in 9-1, 3 per row
+			for (int i = 0; i < (copyListButtons.size() - 3) / 3; i++) {
+				for (int j = 0; j < 3; j++) {
+					gPane.add(copyListButtons.get(counter--), j, i);
+				}
+			}
+			
+			// reset counter
+			counter = copyListButtons.size() - 1;
+			// manually add the blank, 0, blank order
+			for (int i = 2; i >= 0; i--) {
+				gPane.add(copyListButtons.get(counter--), i, 3);
+			}
+			
+			// re-register so the phone's different (#, *) buttons get event handlers
+			registerEventHandlers();
+		} 
+	}
+	
+	protected void registerEventHandlers() {
+		// check if we are using phone layout
+		ArrayList<Button> currList = new ArrayList<Button>();
+		if (copyListButtons != null) {
+			currList = copyListButtons;
+		} else {
+			currList = listButtons;
+		}
+		
+		// set event handlers for all Buttons
+		for (int i = 0; i < currList.size(); i++) {
+			
+			currList.get(i).setOnAction(e ->{
+				System.out.println("Button Pressed: " + ((Button)(e.getSource())).getText());
+				switch(((Button)e.getSource()).getText()){
+					case "1": addInt(1); break;
+					case "2ABC": addInt(2); break;
+					case "3DEF": addInt(3); break;
+					case "4GHI": addInt(4); break;
+					case "5JKL": addInt(5); break;
+					case "6MNO": addInt(6); break;
+					case "7PQRS": addInt(7); break;
+					case "8TUV": addInt(8); break;
+					case "9WXYZ": addInt(9); break;
+					case "*+": numbers.clear(); numberStr.delete(0, numberStr.length()); break;
+					case "0_": addInt(0); break;
+					case "^#": numbers.clear(); numberStr.delete(0, numberStr.length()); break;
+				}
+				
+				numbersLabel.setText(numberStr.toString());
+				
+			});
+			
+		}
+		
+		// free up memory
+		currList = null;
+	}
+	
+	void addInt(int a) {
+		if(numbers.size() < 6) {
+			numbers.add(a);
+			addStr(a);
+		}
+	}
+	
+	void addStr(int s) {
+		numberStr.append(s);
+	}
+}
+
+
+class KeyPadPanePlus extends KeyPadPane {
+	public KeyPadPanePlus() {
+		btn1.setText("[");
+	}
+}
