@@ -1,0 +1,34 @@
+/**
+* File: Lab12Prob02.java
+* Class: CSCI 1302
+* Author: Matteo Ventura, Naomi Oropesa, Sean Roe
+* Created on: May 2, 2025
+* Last Modified: May 2, 2025
+* Description: Create a recursive method that takes a string as a parameter and returns the reversed version of the string 
+*/
+public class Lab12Prob02 {
+	/*
+	 * If the passed String parameter has only one character, return that character as a String.
+	 * Otherwise, return the last character concatenated with a recursive call to reverseString() passing the substring of the 
+		original parameter, but without the last character.
+	 */
+
+	public static void main(String[] args) {
+		System.out.println(reverseString("Lorenzo"));
+	}
+	
+	//reverseString method
+	public static String reverseString(String s) {
+		//Create a character variable that references the last character in the string
+		char lastChar = s.charAt(s.length() - 1);
+		
+		//Check if the length of the string is less than 2, then return the string as it is.
+		if(s.length() < 2) {
+			return s;
+		}else {
+			//If the length of the string is greater than one, cut it down and return each new character.
+			return lastChar + reverseString(s.substring(0, s.length() - 1));
+		}
+	}
+
+}
