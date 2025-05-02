@@ -1,0 +1,41 @@
+/**
+* File: Lab12Prob03.java
+* Class: CSCI 1302
+* Author: Matteo Ventura, Naomi Oropesa, Sean Roe
+* Created on: May 2, 2025
+* Last Modified: May 2, 2025
+* Description: Create a recursive method that modifies problem 2; it takes a string and an integer as a parameter and returns 
+* 					the reversed version of the string. The integer is the current index of the last character in the string
+*/
+public class Lab12Prob03 {
+	/*
+	 * The integer parameter will keep track of the “current” index of the last character in the original String acting as 
+		a “pointer” and will handle recursive calls to itself.
+	 * If the pointer indicates that there is only one character left, return the String parameter.
+	 * If there are still values to process, return the character at the integer position concatenated with a recursive 
+		call to reverseString() passing the original String but with the integer value indicating the “new” last character position.
+	 */
+	
+	public static void main(String[] args) {
+		System.out.println(reverseString("Lorenzo"));
+	}
+	
+	//Normal recursive method that returns the helper method
+	public static String reverseString(String s) {
+		//The helper method references the string s and the last index of the string
+		return reverseString(s, s.length() - 1);
+	}
+	
+	//Helper recursive method that takes a string and integer parameters
+	public static String reverseString(String s, int current) {
+		//Create a character variable that references each letter in the string from the last to the first.
+		char c = s.charAt(current);
+		//If the current index is 0, then return that character
+		if (current < 1) {
+			return c + "";
+		}else {
+			//Return the current character and recursively find the next character to the left
+			return c + reverseString(s, current - 1);
+		}
+	}
+}
