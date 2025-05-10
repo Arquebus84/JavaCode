@@ -1,0 +1,82 @@
+package Source_Main;
+
+
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
+
+public class Game2D extends Stage{
+	
+	Button returnButton;
+	Pane gamePane;
+	TilePane t_Pane;
+	
+	public Game2D() {
+		Font font = new Font("Times New Roman", 15);
+		
+		returnButton = new Button("Return to Main");
+		returnButton.setFont(font);
+		
+		Rectangle player = new Rectangle(20, 20);
+		player.setFill(Color.RED);
+		player.setStroke(Color.BLACK);
+		
+		Rectangle obst1 = new Rectangle(45, 50);
+		obst1.setFill(Color.BLACK);
+				
+		gamePane = new Pane();
+		gamePane.getChildren().add(player);
+		gamePane.getChildren().add(obst1);
+		
+		player.setX(gamePane.getWidth() * 0.5);
+		player.setY(gamePane.getHeight() * 0.5);
+		obst1.setX(240);
+		obst1.setY(150);
+		
+		BorderPane bPane = new BorderPane();
+		bPane.setCenter(gamePane);
+		bPane.setRight(returnButton);
+		
+		Scene scene = new Scene(bPane, 600, 500);
+		
+		this.setTitle("Game2D");
+		this.setScene(scene);
+		this.show();
+		
+		/**Player controls*/
+		player.setOnKeyPressed(key ->{
+			//System.out.println("Key Pressed: " + e.getCode());			
+			if(key.getCode() == KeyCode.W) {
+				player.setTranslateY( (player.getTranslateY() > 0)? player.getTranslateY() - 10 : player.getTranslateY());
+			}else if(key.getCode() == KeyCode.S) {
+				player.setTranslateY( (player.getTranslateY() < scene.getHeight() - 20)? player.getTranslateY() + 10 : player.getTranslateY());
+			}
+			
+			if(key.getCode() == KeyCode.D) {
+				player.setTranslateX( (player.getTranslateX() < scene.getWidth() - 20)? player.getTranslateX() + 10 : player.getTranslateX());
+			}else if(key.getCode() == KeyCode.A) {
+				player.setTranslateX( (player.getTranslateX() > 0)? player.getTranslateX() - 10 : player.getTranslateX());
+			}
+			
+			//System.out.println("X: " + player.getX() + " Y: " + player.getY());
+		});
+		
+		//Keep this here to allow the program to work
+		player.requestFocus();
+		
+		returnButton.setOnAction(e ->{
+			System.out.println("Loading Main Menu");
+			this.close();
+		});
+	}
+
+//	public static void main(String[] args) {
+//		launch(args);
+//	}
+}
