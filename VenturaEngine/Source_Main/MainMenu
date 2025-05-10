@@ -1,0 +1,69 @@
+package Source_Main;
+
+import javafx.application.Application;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.text.*;
+
+import javafx.scene.control.ComboBox;
+
+import javafx.scene.layout.*;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+public class MainMenu extends Pane{
+	private Text applicationText;
+	private Button launchApp;	
+	private ComboBox<String> appList;
+	
+	public MainMenu() {
+		//Font Style
+		Font font = new Font("Times New Roman", 15);
+		
+		//Button
+		launchApp = new Button("Launch Application");
+		launchApp.setFont(font);
+		
+		applicationText = new Text("Select an Application");
+		applicationText.setStyle("-fx-font: 20 \"Times New Roman\";");
+		
+		//Game List
+		appList = new ComboBox<>();
+		appList.getItems().addAll("2D Controller", "Microwave App", "Dating Simulator");
+		appList.setPrefWidth(200);
+		
+		//Set default item selected
+		appList.setValue("2D Controller");
+		
+		//Setting font style is different for ComboBox
+		appList.setStyle("-fx-font: 15px \"Times New Roman\";");
+						
+		VBox vBox1 = new VBox();
+		vBox1.getChildren().addAll(applicationText, appList, launchApp);
+		vBox1.setAlignment(Pos.CENTER);
+		
+		this.getChildren().add(vBox1);		
+		this.setTranslateX(300);
+		this.setTranslateY(100);
+		
+		launchApp.setOnAction(e->{
+			
+			if(appList.getSelectionModel().getSelectedItem() == "Dating Simulator") {
+				System.out.println("Work in Progress");
+			}else {
+				openApp();
+			}
+		});
+	}
+	
+	public void openApp() {
+		System.out.println("Opened: " + appList.getSelectionModel().getSelectedItem());
+		
+		if(appList.getSelectionModel().getSelectedItem() == "2D Controller") {
+			new Game2D();
+		}else if (appList.getSelectionModel().getSelectedItem() == "Microwave App") {
+			new MicrowaveApp();
+		}
+		
+	}
+}
