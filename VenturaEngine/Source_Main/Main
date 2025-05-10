@@ -1,0 +1,37 @@
+package Source_Main;
+
+import javafx.application.Application;
+import javafx.geometry.Pos;
+import javafx.scene.layout.*;
+import javafx.scene.text.Text;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+public class Main extends Application{
+	
+	@SuppressWarnings("exports")
+	@Override
+	public void start(Stage stage) {
+		VBox pane = new VBox();
+		String title = "VenturaEngine_v0.1";
+		
+		Text titleCard = new Text("Welcome to Ventura Engine!");
+		titleCard.setStyle("-fx-font: 25px \"Times New Roman\";");
+		
+		pane.getChildren().add(titleCard);
+		pane.getChildren().add(new MainMenu());
+		
+		Scene scene = new Scene(pane, 800, 600);
+		
+		pane.setAlignment(Pos.TOP_CENTER);
+		
+		stage.setScene(scene);
+		stage.setTitle(title);
+		stage.show();
+	}
+	
+	public static void main(String[] args) {
+		launch(args);
+	}
+
+}
